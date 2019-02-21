@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>刮刮卡</title>
+		<style type="text/css">
+			* {
+				padding: 0;
+				margin: 0;
+			}
+			
+			#wrap {
+				width: 320px;
+				height: 568px;
+				margin: 0 auto;
+				position: relative;
+			}
+			
+			#wrap>img {
+				width: 100%;
+			}
+			
+			#my-canvas {
+				position: absolute;
+				top: 195px;
+				left: 32px;
+				transition: all 1s;
+			}
+			
+			#prize {
+				width: 255px;
+				height: 125px;
+				position: absolute;
+				top: 195px;
+				left: 32px;
+				text-align: center;
+				line-height: 125px;
+				font-size: 40px;
+				color: gold;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div id="wrap">
+			<img src="img/cark.png" alt="" />
+			<!--奖品-->
+			<p id="prize">5,000,000</p>
+			<!--行内元素-->
+			<canvas id="my-canvas" width="255" height="125">
+				该浏览器不支持canvas元素
+			</canvas>
+		</div>
+
+		<script type="text/javascript">
+			//获取元素
+			var myCanvas = document.getElementById("my-canvas");
+			var wrapDiv = document.getElementById("wrap");
+
+			//获取绘画元素(上下文)
+			var context = myCanvas.getContext("2d");
+
+			//绘制矩形
+			context.fillStyle = "darkgray"; //设置填充色
+			context.fillRect(0, 0, myCanvas.width, myCanvas.height);
+
+			//鼠标按下
+			myCanvas.onmousedown = function() {
+				//鼠标移动
+				myCanvas.onmousemove = function(event) {
+					//获取鼠标位置(在canvas坐标系下)
+					var x = event.clientX - myCanvas.offsetLeft - wrapDiv.offsetLeft;
+					var y = event.clientY - myCanvas.offsetTop - wrapDiv.offsetTop;
+					//设置图像合并方式
+					context.globalCompositeOperation = "destination-out";
+					//画圆
+					context.beginPath();
+					context.arc(x, y, 10, 0, Math.PI * 2, true);
+					context.fillStyle = "cyan";
+					context.fill();
+
+					justify();
+				}
+			}
+
+			//鼠标松开
+			myCanvas.onmouseup = function() {
+				//清除移动事件
+				myCanvas.onmousemove = null;
+			}
+
+			//判断是否清除80%
+			function justify() {
+				//获取图像数据
+				var imageData = context.getImageData(0, 0, myCanvas.width, myCanvas.height);
+				//获取颜色数据
+				var colorData = imageData.data;
+				//计算透明的像素点
+				var count = 0;
+				for(var i = 0; i < colorData.length; i += 4) {
+					//获取alpha值
+					if(colorData[i + 3] == 0) {
+						count++;
+					}
+				}
+
+				//判断
+				if(count > colorData.length / 4 * 0.8) {
+					myCanvas.style.opacity = 0;
+				}
+
+			}
+		</script>
+
+	</body>
+
+</html>

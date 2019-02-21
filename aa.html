@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+</head>
+<body>
+    <canvas width="1800" height="900" id="canvas" style="background:#000;">您的浏览器不支持canvas，请升级浏览器</canvas>
+  <script>
+    var canvas = document.getElementById("canvas");
+    //创建一个2d的绘图环境，这个是调用canvasAPI必须的东西。
+    var ctx = canvas.getContext("2d");
+    var spheerX = 300;
+    var spheerY = 300;
+    var spheerWH = 100;
+    var shuju1 = [-15,270,225,90];
+    var shuju2 = [90,345,270,225];
+    var colorArr = ["yellow","red","#ccc","green"];
+    var baifenbiArr = ["29.14%","20.86%","12.5%","37.5%"];
+    for(var i = 0; i < 4; i++){
+      strokeSpheer(shuju1[i],shuju2[i],false,colorArr[i],baifenbiArr[i]);
+    }
+
+    function strokeSpheer(beginDeg,endDeg,isTrue,color,baifenbi){
+      ctx.beginPath();
+      ctx.fillStyle = color;
+      ctx.moveTo(spheerX,spheerY);
+      ctx.arc(spheerX,spheerY,spheerWH,beginDeg*Math.PI/180,endDeg*Math.PI/180,isTrue);
+      ctx.closePath();
+      ctx.fill();
+      ctx.textBaseline = "bottom";
+      var deg = endDeg - Math.abs(beginDeg-endDeg)/2;
+      var textX = spheerX + Math.cos(deg*Math.PI/180) * (spheerWH+20);
+      var textY = spheerY + Math.sin(deg*Math.PI/180) * (spheerWH+20);
+      if(textX < spheerX){
+        ctx.textAlign = "right";
+      }
+      if(textY > spheerY){
+        ctx.textBaseline = "top";
+      }
+            
+      ctx.fillText(baifenbi,textX,textY);
+    }
+
+
+
+  </script>
+</body>
+</html>
