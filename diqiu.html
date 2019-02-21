@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" width="600" height="600" style="background: #000;"></canvas>
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas');
+		var cxt = canvas.getContext('2d');
+		// 天数
+		var i = 0
+		function draw(){
+			cxt.clearRect(0,0,600,600);
+			//画轨道
+			cxt.strokeStyle = "#fff";
+			cxt.lineWidth = 1;
+			cxt.beginPath();
+			cxt.arc(300,300,150,0,2*Math.PI,false);
+			cxt.stroke();
+			cxt.closePath();
+
+			//画太阳
+			cxt.beginPath();
+			cxt.arc(300,300,30,0,2*Math.PI,false);
+			//里面颜色 #FEF7B3  中间 #FCD70D  外面 #EE5C22
+			//createRadialGradient 内圆心X  内圆心Y  内圆心的半径  外圆的X
+			//外圆的Y  外圆的半径
+			var color1 = cxt.createRadialGradient(300,300,0,300,300,30);
+			color1.addColorStop(0,'#FEF7B3');
+			color1.addColorStop(0.5,'#FCD70D');
+			color1.addColorStop(1,'#EE5C22');
+			cxt.shadowColor = "#fff";
+			cxt.shadowBlur = 10;
+			cxt.fillStyle = color1;
+			cxt.fill();
+			cxt.closePath();
+
+			// 画地球
+			cxt.save();
+			cxt.translate(300,300);
+			cxt.rotate(i*360/365*Math.PI/180);
+			cxt.beginPath();
+			cxt.arc(0,-150,20,0,2*Math.PI,false);
+			//#E8F8F7  #2E76D2 #004270
+			var color2 = cxt.createRadialGradient(0,-150,0,0,-150,20);
+			color2.addColorStop(0,'#E8F8F7');
+			color2.addColorStop(0.5,'#2E76D2');
+			color2.addColorStop(1,'#004270');
+			cxt.fillStyle = color2;
+			cxt.fill();
+			cxt.closePath();
+			cxt.restore();
+			i++;
+		}
+		draw();
+		setInterval(draw,20);
+		
+
+		
+	</script>
+</body>
+</html>

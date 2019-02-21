@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	<style type="text/css">
+	</style>
+</head>
+<body>
+	<img src="aaa.jpg" id="img" />
+	<!-- canvas标签 -->
+	<canvas id="canvas" width="800" height="500" style="background: #000;">您的浏览器不支持canvas标签</canvas>
+
+	<script type="text/javascript">
+		window.onload = function(){
+			// 获取canvas的dom对象
+			var canvas = document.getElementById('canvas');
+			// 创建一个2d的绘图环境，调用convasAPI必须的东西
+			var ctx = canvas.getContext('2d');
+
+			// 画一个线条（线条粗细、颜色）
+			// strokeStyle 用来设置笔触的颜色
+			ctx.strokeStyle = "#f00";
+			// lineWidth 设置线条的宽度
+			ctx.lineWidth = 20;
+			// lineCap 用来设置线条末端的形状   butt 默认值，round 圆形 square 正方形 
+			ctx.lineCap = "square";
+			// beginPath 起始一条路径
+			ctx.beginPath();
+			//设置线条的起始点，，里面两个参数，分别为相对左上角（0，0）的X轴坐标和Y轴坐标
+			ctx.moveTo(20,20);
+			// 设置线条的结束点，参数同moveTo
+			ctx.lineTo(200,20);
+			//划线
+			ctx.stroke();
+			//结束路径
+			ctx.closePath();
+
+			//画拐角线条
+			// ctx.beginPath();
+			// ctx.lineWidth = 5;
+			// // 设置线条拐角交汇的样式  bevel斜角  round圆角 miter 尖角
+			// ctx.lineJoin = "round";
+			// ctx.moveTo(20,50);
+			// ctx.lineTo(20,200);
+			// ctx.lineTo(200,50);
+			// ctx.stroke();
+			// ctx.closePath();
+
+			//画三角形
+			ctx.beginPath();
+			ctx.lineWidth = 5;
+			// 设置线条拐角交汇的样式  bevel斜角  round圆角 miter 尖角
+			ctx.lineJoin = "round";
+			ctx.moveTo(20,50);
+			ctx.lineTo(20,200);
+			ctx.lineTo(200,50);
+			ctx.closePath();
+			ctx.stroke();
+
+
+			// 画空心圆形
+			ctx.beginPath();
+			ctx.strokeStyle = "00f";
+			ctx.lineWidth = 8;
+			//arc画圆  5个参数  圆心的X轴坐标   圆心的Y轴坐标  圆的半径  圆开始的弧度  圆结束的弧度   可选 顺时针画还是逆时针画  false（顺时针） true（逆时针）
+			//弧度 = 角度*PI/180；  弧度=角度*Math.PI/180
+			ctx.arc(100,300,80,0,2*Math.PI,false);
+			ctx.stroke();
+			ctx.closePath();
+			
+			//画一个实心圆
+			ctx.beginPath();
+			// fillStyle 设置填充颜色
+			// 阴影，shadowColor  阴影颜色  shadowBlur 阴影的模糊距离  shadowOffsetX 阴影的左偏移距离 shadowOffsetY 阴影的右偏移距离
+			ctx.fillStyle="#f00";
+			ctx.strokeStyle="#fff";
+			ctx.lineWidth = 2;
+			ctx.arc(300,100,80,0,2*Math.PI,false);
+			// 填充图形
+			ctx.fill();
+			ctx.closePath();
+
+			//空心矩形  (第一种)
+			ctx.beginPath();
+			ctx.strokeStyle = "#0f0";
+			ctx.lineWidth = 6;
+			//rect  四个参数 左上角起始点的X轴坐标  左上角起始点的Y轴坐标  矩形的宽度  矩形的高度
+			ctx.rect(300,250,100,80);
+			ctx.stroke();
+			ctx.closePath();
+
+			// 空心矩形 （第二种画法）
+			ctx.beginPath();
+			ctx.strokeRect(300,350,100,100);
+			ctx.closePath();
+
+			//实心矩形（第一种画法）
+			ctx.beginPath();
+			// ctx.rect(500,20,100,100);
+			// ctx.fill();
+			var gra = ctx.createLinearGradient(0,0,800,0);
+			gra.addColorStop(0,'#f00');
+			gra.addColorStop(0.5,'#00f');
+			gra.addColorStop(1,'#0f0');
+			ctx.fillStyle = gra;
+			ctx.fillRect(500,20,100,100);
+			//相当于橡皮擦，，清除所画的东西
+			ctx.clearRect(500,20,50,50);
+
+			ctx.closePath();
+
+			// 设置文字
+			ctx.font = "40px MicrosoftYahei";
+			ctx.lineWidth = 1;
+			ctx.strokeText('看下字体是不是微软雅黑？',400,200);
+			//ctx.fillText('再来看下看下字体是不是',450,300);
+
+			//插入图片
+			
+			var img = new Image();
+			img.src="https://www.baidu.com/img/baidu_jgylogo3.gif";
+			img.onload = function(){
+				ctx.save();
+				ctx.translate(200,200);
+				ctx.rotate(60*Math.PI/180);	
+				ctx.drawImage(img,0,0,200,200);
+				ctx.restore();
+			}	
+			//var img = document.getElementById('img');
+			
+			//
+
+			//旋转
+			//保存之前画布上的内容，保存当前环境
+			ctx.save();
+			//重新映射一个旋转空间，空间的原点为现空间的500,400
+			ctx.translate(600,200);
+			//旋转所映射的空间，旋转的为弧度=角度*Math.PI/180
+			ctx.rotate(60*Math.PI/180);
+			ctx.fillRect(0,0,200,200);
+			//把映射的空间存到之前的画布上。
+			ctx.restore();
+		}
+	</script>
+</body>
+</html>

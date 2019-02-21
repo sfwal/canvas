@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	<canvas id="canvas" width="1000" height="1000" style="background: #000"></canvas>
+
+	<script type="text/javascript">
+		var canvas = document.getElementById('canvas');
+		var cxt = canvas.getContext('2d');
+		function gd(){
+			for(var i=1;i<9;i++){
+				cxt.beginPath();
+				cxt.strokeStyle = "#fff";
+				cxt.lineWidth = 1;
+				cxt.arc(500,500,i*50,0,2*Math.PI,false);
+				cxt.stroke();
+				cxt.closePath();
+			}
+		}
+		//画球
+		function qiu(x,y,r,t,c){
+			this.x = x;
+			this.y = y;
+			this.r = r;
+			this.t = t;
+			this.c = c;
+			var i = 0;
+			this.hua = function(){
+				cxt.save();
+				cxt.translate(500,500);
+				cxt.rotate(i*360/this.t*Math.PI/180);
+				cxt.beginPath();
+				cxt.fillStyle = this.c;
+				cxt.arc(this.x,this.y,this.r,0,2*Math.PI,false);
+				cxt.fill();
+				cxt.closePath();
+				cxt.restore();
+				i++;
+			}
+
+		}
+		function ty(){
+			qiu.call(this,0,0,30,0,"#f00");
+		}
+		function sx(){
+			qiu.call(this,0,-50,10,100,"#f00");
+		}
+		function jx(){
+			qiu.call(this,0,-100,10,200,"#f00");
+		}
+		function dq(){
+			qiu.call(this,0,-150,12,300,"#f00");
+		}
+		function hx(){
+			qiu.call(this,0,-200,16,400,"#f00");
+		}
+		function mx(){
+			qiu.call(this,0,-250,18,500,"#f00");
+		}
+		function tx(){
+			qiu.call(this,0,-300,28,600,"#f00");
+		}
+		function twx(){
+			qiu.call(this,0,-350,16,700,"#f00");
+		}
+		function hwx(){
+			qiu.call(this,0,-400,20,800,"#f00");
+		}
+
+		var ty1 = new ty();
+		var sx1 = new sx();
+		var jx1 = new jx();
+		var dq1 = new dq();
+		var hx1 = new hx();
+		var mx1 = new mx();
+		var tx1 = new tx();
+		var twx1 = new twx();
+		var hwx1 = new hwx();
+
+		function zhuan(){
+			cxt.clearRect(0,0,1000,1000);
+			gd();
+			ty1.hua();
+			sx1.hua();
+			jx1.hua();
+			dq1.hua();
+			hx1.hua();
+			mx1.hua();
+			tx1.hua();
+			twx1.hua();
+			hwx1.hua();
+		}
+		setInterval(zhuan,10);
+	</script>
+</body>
+</html>
