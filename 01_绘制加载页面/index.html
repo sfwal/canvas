@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title></title>
+	</head>
+
+	<body>
+		<canvas id="my-canvas" width="600" height="600"></canvas>
+		<script type="text/javascript">
+			var myCanvas = document.getElementById("my-canvas");
+			var ctx = myCanvas.getContext("2d");
+
+			var deg = 90;
+
+			function draw() {
+				deg++;
+
+				//画底图
+				ctx.beginPath();
+				ctx.arc(300, 300, 200, 0, Math.PI * 2, true);
+				ctx.closePath();
+				var line = ctx.createLinearGradient(300, 100, 300, 500);
+				line.addColorStop(0, "#BFBFBF");
+				line.addColorStop(1, "#E9E8E9");
+				ctx.fillStyle = line;
+				ctx.fill();
+
+				//中间的圆
+				ctx.beginPath();
+				ctx.arc(300, 300, 150, 0, Math.PI * 2, true);
+				ctx.closePath();
+				//添加阴影
+				ctx.shadowOffsetY = 3;
+				ctx.shadowColor = "black";
+				ctx.shadowBlur = 5;
+				ctx.fillStyle = "#EBEBEB";
+				ctx.fill();
+
+				//画圆弧
+				ctx.beginPath();
+				ctx.arc(300, 300, 160, -Math.PI / 180 * 90, -Math.PI / 180 * deg, true);
+				ctx.shadowBlur = 0;
+				ctx.shadowOffsetY = 0;
+				ctx.lineWidth = 20;
+
+				var line1 = ctx.createLinearGradient(300, 130, 300, 470);
+				line1.addColorStop(0, "#77EEFE");
+				line1.addColorStop(1, "#A90868");
+				ctx.strokeStyle = line1;
+				ctx.stroke();
+
+				//文字
+				ctx.textAlign = "end";
+				ctx.fillStyle = "black";
+				ctx.font = "50px 微软雅黑";
+				var textStr = Math.floor((deg - 90) / 360 * 100) + "%"
+				ctx.fillText(textStr, 375, 300);
+
+				if(deg == 450) {
+					clearInterval(timer);
+				}
+			}
+
+			var timer = setInterval(draw, 10);
+		</script>
+	</body>
+
+</html>

@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<style type="text/css">
+			.content {
+				width: 380px;
+				border: 1px solid black;
+				box-shadow: 4px 4px 4px gray;
+			}
+			
+			.btn {
+				border-top: 2px solid red;
+				padding: 10px;
+				overflow: hidden;
+			}
+			
+			.btn span {
+				margin: 0 5px;
+				font-size: 12px;
+				color: red;
+			}
+			
+			.btn select,
+			.btn input {
+				width: 50px;
+				height: 20px;
+			}
+			
+			.btn input {
+				margin: 0 5px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="content">
+			<canvas id="myCanvas" width="320" height="480"></canvas>
+			<div class="btn">
+				<button id="clear">清空画板</button>
+				<span>线条宽度</span>
+				<select id="w">
+					<option value="1">1</option>
+					<option value="2">2</option>
+					<option value="3">3</option>
+					<option value="4">4</option>
+					<option value="5">5</option>
+					<option value="6">6</option>
+					<option value="7">7</option>
+					<option value="8">8</option>
+					<option value="9">9</option>
+					<option value="10">10</option>
+				</select>
+				<span>颜色</span>
+				<input type="color" id="color" />
+				<input type="button" id="save" value="保存" />
+			</div>
+		</div>
+	</body>
+	<script src="js/jquery.min.js"></script>
+	<script type="text/javascript">
+		//获取canvas标签
+		var canvas = document.getElementById("myCanvas");
+		//获取画笔
+		var ctx = canvas.getContext("2d");
+		var wid = 0; //存储线条宽度
+		var col = 0; //存储线条颜色
+		//定义方法完成线条宽度的选择
+		$("select").on("change", function() {
+			wid = $(this).val();
+		});
+		//定义方法获取线条颜色
+		$("#color").on("change", function() {
+			col = $("#color").val();
+		});
+		//定义方法完成绘图的逻辑操作
+		$(document).on("mousedown", function(e) {
+			//获取开始涂鸦的起始点坐标
+			var x0 = e.pageX - $(".content").offset().left;
+			var y0 = e.pageY - $(".content").offset().top;
+			$("#myCanvas").on("mousemove", function(e) {
+				//获取开始在涂鸦过程中目标点坐标
+				var x1 = e.pageX - $(".content").offset().left;
+				var y1 = e.pageY - $(".content").offset().top;
+				//开始绘制
+				startDraw(x0, y0, x1, y1, wid, col);
+				//将目标点作为下一次直线绘制的起始点
+				x0 = x1;
+				y0 = y1;
+			});
+		});
+		$(document).on("mouseup", function() {
+			$("#myCanvas").off("mousemove");
+		});
+		//定义函数完成图片绘制(x0,y0):起始点，（x1，y1）：目标点，col：线条颜色,w:线条宽度
+		function startDraw(x0, y0, x1, y1) {
+			ctx.beginPath();
+			ctx.moveTo(x0, y0);
+			ctx.lineTo(x1, y1);
+			ctx.lineWidth = wid;
+			ctx.strokeStyle = col;
+			ctx.stroke();
+			ctx.closePath();
+		}
+
+		//定义方法完成画板清空
+		$("#clear").on("click", function() {
+			ctx.clearRect(0, 0, canvas.width, canvas.height);
+		});
+
+		//保存为png图片
+		$("#save").click(function() {
+			//导出canvas上的图片, 实质: 将图片的数据存到url中
+			var image = new Image();
+			image.src = canvas.toDataURL("image/png");
+			document.documentElement.appendChild(image)
+			//window.open(image);
+		})
+	</script>
+
+</html>
