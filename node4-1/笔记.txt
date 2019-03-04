@@ -1,0 +1,19 @@
+1、文件上传：
+  bodyParser 无法读取上传文件的信息
+  multer 专门处理文件上传的中间件。
+    var upload = multer({dest:"文件上传路径"});
+    upload.any();
+
+  req.files接受上传文件的信息
+
+  path获取上传文件的后缀名。
+  fs可以重命名文件。
+
+2、模板引擎
+  ejs\jade
+
+  function(data){
+    var str = data.name
+  }
+
+3、route  路由
